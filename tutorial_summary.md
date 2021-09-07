@@ -1,0 +1,65 @@
+- Part 1
+    - Initial project setup using `django-admin startproject <project_name>`
+    - Running the local server using `python manage.py runserver`
+- Part 2
+    - Overview about creating apps using `python manage.py startapp <app_name>`
+    - Defining routes and using views
+    - Linking the main projects urls.py with a newly creations app's urls.py
+- Part 3
+    - Add newly created apps to the projects settings.py installed apps
+    - Django looks for a folder named "templates" in defined installed apps
+    - The Django convention is having a directory within the templates directory that matches the name of the app, blog> templates > blog, users > templates > users
+    - Using render() to render templates
+    - A base template ("base.html") can be created that will house repeated code
+    - Blocks can be overridden by child templates that inherit from a parent template
+    - Static files like css and javascript need to be located in a static directory. Load static directories with {% load static %} at the top of the html document
+    - Using the url tag `{% url '<route-name>' %}` method is a great way to make code more maintainable. If a url changes in urls.py, those changes will be reflected if you use url tag as opposed to hard coding the hrefs
+- Part 4
+    - Command to create a super user `python manage.py createsuperuser`
+    - Create new migrations for recent model changes `python manage.py makemigrations`
+    - Apply migrations `python manage.py migrate`
+- Part 5
+    - Database tables are represented through models
+    - Prints the SQL that will be executed by the specified migration `python manage.py sqlmigrate <app_name> <migration_number`
+    - Django python shell command `python manage.py shell`, interactive ORM console
+    - [Queries in Django](https://docs.djangoproject.com/en/3.2/topics/db/queries/)
+    - Dunderstr (double underscore string) allows you to define what you want to see when querying an object through the shell
+    - Django creates a special set for accessing related child records of a parent object using the naming convention of `.modelname_set`, `user.post_set.all()`. Records can be created and maintained using this set as well, `user.post_set.create(title='Blog 3', content='Third post')`. Normally an author argument would need to be passed when creating a Post object but when using a set Django will automatically associate the parent with the newly created child record
+    - Django has built in filters for formatting dates [more info](https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#date). `post.date_posted|date:"F d, Y"` = August 23, 2021
+    - Using the admin panel for CRUD, models must be registered in the app's admin.py file, `admin.site.register(Post)`
+- Part 6
+    - Django has built in classes that will be converted to html, like a user creation form
+    - Form tags require a {% csrf_token %}
+    - Flash messages are an easy way to send 1 time alerts to a template that will only be displayed once and will disappear on the next request
+    - Crispy forms allow styling of built-in Django forms, needs to be declared in installed apps. The css framework you want to use should be declared in the project's settings.py file as well, `CRISPY_TEMPLATE_PACK = 'boostrap4'` [more info](https://django-crispy-forms.readthedocs.io/en/latest/)
+- Part 7
+    - as_view() takes an argument telling Django where to find the template for the specified view
+    - `LOGIN_REDIRECT_URL = 'blog-home'` in the project's settings.py is where you can specify where you want Django to redirect after a user logs in
+    - Django has a built in user variable that contains information about the current user. You can check if the current user is authenticated via the `user.is_authenticated` method. This can be used for conditional rendering
+    - Route guarding can be achieved via a login required decorator that is added to a view function
+    - Decorators add functionality to an existing function, `@login_required` (must specify a login route in the project's settings.py)
+- Part 8
+    - The built in Django models can be extended. Example of extending a Django model can be found [here](users/models.py) where a profile is added for users
+    - Pillow is a library for working with images in python and must be installed via pip
+    - Image storage location can be changed in the project's settings.py file via `MEDIA_ROOT` and `MEDIA_URL`. Must add the media routes to url patterns [more info](https://docs.djangoproject.com/en/3.2/howto/static-files/#serving-files-uploaded-by-a-user-during-development)
+    - [Django signals](https://docs.djangoproject.com/en/3.2/topics/signals/). Signals must be imported inside the ready function of the app's apps.py file
+- Part 9
+    - Model forms work with a specific database model
+    - When dealing with user uploaded images on forms, the forms `enctype` attribute must be specified as `enctype=multipart/form-data`
+    - Automatically resizing images can be achieved by using a pip package called [pillow](https://pypi.org/project/Pillow/). By resizing images you can save storage on the server by reducing the file sizes of user uploaded images
+- Part 10
+    - Class based views have more functionality than function views. Class based views cannot be passed into url paths like function based views, they must have as_view() on the end which converts them into a view. Class based views look for a specific template naming convention by default, `<app>/<model>_<viewtype>.html`, `blog/post_list.html`. A template can be specified as well
+    - Django includes generic views for common behaviors such as a list views [more info](https://docs.djangoproject.com/en/3.2/ref/class-based-views/generic-display/#listview)
+    - Variables can be added into routes, like an id [example](/blog/templates/blog/home.html)
+    - Creating a get_absolute_url method will return the path to a newly created objects instance
+    - Decorators cannot be used on classes (like trying to use a login decorator on a class based views url pattern to ensure a user to logged in to use it). Mixins are used instead. Mixins are classes that you can inherit from to give functionality to a view
+    - Class based views steps
+        1. Import view, views.py
+        2. Declare url path, urls.py
+        3. Create template
+- Part 11
+    - Objects can be paginated by creating a paginator object
+- Part 12
+    - Learnt how to hookup password reset and configuring emails in Django
+- Part 17
+    - Creating a requirements.txt file `pip freeze > requirements.txt`
