@@ -63,3 +63,7 @@
     - Learnt how to hookup password reset and configuring emails in Django
 - Part 17
     - Creating a requirements.txt file `pip freeze > requirements.txt`
+    - Creating a heroku app `heroku create <appname>`
+    - Opening heroku in browser `heroku open`
+    - Push code to heroku `git push heroku main`
+    - For static files to work you must set the STATIC_ROOT in the project's settings.py
